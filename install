@@ -5,7 +5,7 @@
 sudo apt-get install < dependencies.txt
 # sudo yum install < dependencies.txt
 
-pip3 install pyinstaller
+pip3 install pyinstaller pycryptodome
 
 
 # installing pwds

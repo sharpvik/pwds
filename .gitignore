@@ -1,0 +1,6 @@
+.pwds
+.masterhash
+__pycache__/*
+
+pwds
+init

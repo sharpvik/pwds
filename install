@@ -1,0 +1,21 @@
+#!/usr/bin/bash
+
+# installing dependencies
+# (un)comment or rewrite so that your package manager is used
+sudo apt-get install < dependencies.txt
+# sudo yum install < dependencies.txt
+
+pip3 install pyinstaller
+
+
+# installing pwds
+pyinstaller init.py --onefile
+pyinstaller main.py --onefile
+
+mv dist/* .
+mv main pwds
+
+
+# cleanup
+rm -rf build dist *.spec
+

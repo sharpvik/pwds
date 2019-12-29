@@ -1,6 +1,4 @@
-.pwds
-.masterhash
 __pycache__/*
-
-pwds
-init
+src/__pycache__/*
+store/*
+todo

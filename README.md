@@ -11,10 +11,12 @@ Check that the package manager used at the top of the `install` script is right,
 then run the following:
 
 ```bash
-./install   # compiles Python code and produces `init` and `pwds`
-./init      # and then follow instructions
-./pwds      # to see available operations
-./pwds [OP] # where `OP` is some supported operation (e.g. `gen`)
+# creates a symbolic link between some $PATH directory and `src/main.py`
+sudo ./setup.py     
+
+pwds init   # and then follow instructions
+pwds        # to see available operations
+pwds [OP]   # where `OP` is some supported operation (e.g. `gen`)
 ```
 
 

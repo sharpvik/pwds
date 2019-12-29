@@ -1,21 +1,24 @@
 # embedded libs
 from getpass import getpass
 import json
+from os import path
 from random import SystemRandom
 from string import ascii_letters, digits, punctuation
 
 # my libs
 from util import bash
+from config import WORDS_FILE
 
 
 
 # constants
-WORDS_FILE = 'words'
 RAND = SystemRandom()
 ALPHABET = ascii_letters + digits + punctuation
+WORDS = str()
 
-with open(WORDS_FILE, 'r') as words_file:
-    WORDS = words_file.read().split('\n')
+if path.exists(WORDS_FILE):
+    with open(WORDS_FILE, 'r') as words_file:
+        WORDS = words_file.read().splitlines()
 
 
 
@@ -147,7 +150,7 @@ def see(pwds):
     pwd = pwds.pop(domain, None)
 
     if pwd is None:
-        print( bash.warning('Domain `{domain}` is not there.') )
+        print( bash.warning(f'Domain `{domain}` is not there.') )
     else:
         print(  f'Password for `{domain}`: ' + bash.bold( bash.blue(pwd) )  )
 

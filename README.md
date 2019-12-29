@@ -13,8 +13,9 @@
 
 The `setup.py` script doesn't compile any code. It only creates a symlink
 between `INSTALLATION_PATH` and `src/main.py`. By default, `INSTALLATION_PATH`
-is set to be `/usr/local/bin` as this folder is in `$PATH` by default. However,
-you are *free to change it* if necessary!
+is set to be `/usr/local/bin` as this folder is in `$PATH`. However, you are
+*free to change it* if necessary (just make sure that the path you set it to is
+also in `$PATH`, otherwise, you won't be able to use `pwds` globally)!
 
 Run the following to install and start using `pwds`:
 

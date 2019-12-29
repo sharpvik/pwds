@@ -1,0 +1,22 @@
+========== ESSENTIALS ==========================================================
+
+Remove the MAX_ATTEMPTS limit
+
+Use `appdirs` to store `.masterhash` and `.pwds` in a standard place
+
+Enforce good master passwords
+
+Use hashlib.pbkdf2_hmac with high iteration count for salted hashing
+
+Salsa20 + HMAC for authenticity check of `.pwds`
+
+Use `secrets.choice(lst)` to generate new passwords
+
+
+
+
+========== MAYBE SOME TIME IN THE FUTURE =======================================
+
+Argon2 for hashing
+
+Allow custom word dicrionaries for password generation

@@ -1,4 +1,4 @@
-# embedded libs
+# mbd libs
 from getpass import getpass
 import json
 from os import path

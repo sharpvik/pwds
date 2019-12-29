@@ -79,7 +79,10 @@ def init():
         if not proceed:
             return
 
-    mkdir(config.STORE_FOLDER)
+    try:
+        mkdir(config.STORE_FOLDER)
+    except FileExistsError:
+        pass
 
     masterpwd = str()
 

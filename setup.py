@@ -41,9 +41,7 @@ MAIN_SCRIPT_PATH = str( Path(SRC_FOLDER, 'main.py') )
 
 """ Installation """
 try:
-    # create symbolic link
     ln(MAIN_SCRIPT_PATH, INSTALLATION_PATH)
-
 except FileExistsError:
     pass
 

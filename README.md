@@ -7,12 +7,24 @@
 
 ### UNIX-based Operating Systems (MacOS included)
 
-Check that the package manager used at the top of the `install` script is right,
-then run the following:
+> The `setup.py` script provided is a non-conventional installation script!
+> It doesn't use `setuptools` and may require superuser privileges to run
+> properly. 
+
+The `setup.py` script doesn't compile any code. It only creates a symlink
+between `INSTALLATION_PATH` and `src/main.py`. By default, `INSTALLATION_PATH`
+is set to be `/usr/local/bin` as this folder is in `$PATH` by default. However,
+you are *free to change it* if necessary!
+
+Run the following to install and start using `pwds`:
 
 ```bash
 # creates a symbolic link between some $PATH directory and `src/main.py`
-sudo ./setup.py     
+./setup.py
+
+# you may have to run `sudo ./setup.py` instead if `./setup.py` fails
+# it is due to `setup.py` requesting to create a symlink in a directory owned by
+# `root` or `superuser`
 
 pwds init   # and then follow instructions
 pwds        # to see available operations

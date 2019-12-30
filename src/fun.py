@@ -1,11 +1,11 @@
-"""
+"""-----------------------------------------------------------------------------
 The `fun` module contains commonly used functions that may have to be shared
 between multiple Python modules. In other words, all the "fun" is here :)
-"""
+-----------------------------------------------------------------------------"""
 
 import getpass
-import typing
 import os
+from typing import Dict
 
 import requests
 
@@ -15,15 +15,19 @@ import logger as logr
 
 
 
-"""
+"""-----------------------------------------------------------------------------
 Check if `Pwds` Password Manager has already been launched on this machine.
-"""
+-----------------------------------------------------------------------------"""
+
 def already_launched():
     return os.path.exists(config.DATA_FOLDER)
 
 
 
-""" Ask user to input new Master Password and return it. Warnings included. """
+"""-----------------------------------------------------------------------------
+Ask user to input new Master Password and return it. Warnings included.
+-----------------------------------------------------------------------------"""
+
 def new_master_password() -> str:
     logr.caution(
 """
@@ -37,7 +41,7 @@ None of the rules above are enforced by the tool but are strongly recommended.
 """
     )
 
-    mpwd: str = str()
+    mpwd: str
 
     while True:
         mpwd1: str = getpass.getpass('Master Password: ').strip()
@@ -54,14 +58,15 @@ None of the rules above are enforced by the tool but are strongly recommended.
 
 
 
-"""
+"""-----------------------------------------------------------------------------
 Save encrypted passwords to `.pwds-store`, salt to `.salt`, HMAC verifier to
 `.mastermac`.
-"""
+-----------------------------------------------------------------------------"""
+
 def pwds_store_write(pwds_json: str, mpwd: str):
     # type declarations
-    pwds_encrypted: bytes = bytes()
-    salt: bytes = bytes()
+    pwds_encrypted: bytes
+    salt: bytes
 
     # encrypt `pwds_json`
     pwds_encrypted, salt = secure.encrypt_pwds(pwds_json, mpwd)
@@ -69,7 +74,7 @@ def pwds_store_write(pwds_json: str, mpwd: str):
     # produce HMAC for pwds_encrypted to verity that it hasn't been corrupted
     mastermac: bytes = secure.produce_mastermac(pwds_encrypted, salt).encode()
 
-    todo: typing.Dict = {
+    todo: Dict = {
         pwds_encrypted: config.PWDS_STORE_FILE,
         mastermac: config.MASTERMAC_FILE,
         salt: config.SALT_FILE,

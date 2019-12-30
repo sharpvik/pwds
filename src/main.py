@@ -1,6 +1,5 @@
 import json
 import os
-# import platform # e.g. platform.system() => 'Linux' / 'Darwin' / 'Windows'
 
 import click
 import colorama
@@ -21,12 +20,13 @@ def main():
 
 
 
-"""
+"""-----------------------------------------------------------------------------
 The `launch` command
     - Gets master password and enforces *good* master password practices
     - Uses `appdirs` to store `.mastermac` by `HMAC`, `.pwds-store` by
       `Salsa20`, and prefetched `.dictionary`
-"""
+-----------------------------------------------------------------------------"""
+
 @main.command(help='Initialize pwds. This will remove any existing data.')
 def launch():
     # warn user if already launched
@@ -38,7 +38,7 @@ on this machine. Running launch again will erase any existing data.
 """
         )
 
-        proceed = input(
+        proceed: bool = input(
             'Are you sure you want to continue (y/n)? '
         ).strip().lower() == 'y'
 

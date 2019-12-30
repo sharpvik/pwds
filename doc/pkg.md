@@ -10,4 +10,4 @@
 | `requests`     | 2.python-requests.org/en/master                             |
 | `pycryptodome` | pycryptodome.readthedocs.io                                 |
 | `colorama`     | github.com/tartley/colorama                                 |
-| `temcolor`     | pypi.org/project/termcolor                                  |
+| `termcolor`    | pypi.org/project/termcolor                                  |

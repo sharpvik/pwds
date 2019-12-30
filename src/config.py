@@ -1,6 +1,6 @@
-"""
+"""-----------------------------------------------------------------------------
 The `config` module contains metadata about the tool.
-"""
+-----------------------------------------------------------------------------"""
 
 import pathlib
 import os
@@ -49,4 +49,4 @@ SALT_FILE = pathlib.Path(DATA_FOLDER, '.salt')
 
 """ Project Config """
 
-LOGGER_ON = False
+LOGGER_ON: bool = False

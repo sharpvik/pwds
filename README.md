@@ -1,51 +1,36 @@
 # Pwds Password Manager
 
+*Pwds* is a simple command line password manager tool.
+
 
 
 ## User Guide
 
+> Setup script (say `setup.py`) is not yet implemented!
 
-### UNIX-based Operating Systems (MacOS included)
+> Windows installer is not here either!
 
-> The `setup.py` script provided is a non-conventional installation script!
-> It doesn't use `setuptools` and may require superuser privileges to run
-> properly. 
-
-The `setup.py` script doesn't compile any code. It only creates a symlink
-between `INSTALLATION_PATH` and `src/main.py`. By default, `INSTALLATION_PATH`
-is set to be `/usr/local/bin` as this folder is in `$PATH`. However, you are
-*free to change it* if necessary (just make sure that the path you set it to is
-also in `$PATH`, otherwise, you won't be able to use `pwds` globally)!
-
-Run the following to install and start using `pwds`:
-
-```bash
-# creates a symbolic link between some $PATH directory and `src/main.py`
-./setup.py
-
-# you may have to run `sudo ./setup.py` instead if `./setup.py` fails
-# it is due to `setup.py` requesting to create a symlink in a directory owned by
-# `root` or `superuser`
-
-pwds init   # and then follow instructions
-pwds        # to see available operations
-pwds [OP]   # where `OP` is some supported operation (e.g. `gen`)
-```
-
-
-### Windows
-
-> Windows installer script is coming soon.
+*Pwds* isn't usable yet and is still being actively developed. Please refer to
+the [Contribute](#contribute) section if you want to help.
 
 
 
-## Vulnerabilities
+## Brief Algorithm Description
 
-If you think you can just replace the `.masterhash` file with your own hash and
-just "crack it all open", then you are mistaken. Your master password is used to
-generate the `secret` for `Salsa20` cipher, and if it's wrong, nothing is gonna
-come out of it.
+> To be expected in future commits.
 
-The `.masterhash` is there only to provide nice workflow and tell you whether
-the password you are typing in is actually going to be able to decrypt `.pwds`.
 
+
+## <a name="contribute"></a> Contribute
+
+If you wish to contribute to this project, please inspect the [src](src) folder.
+The algorithm is failry simple and can be deduced from just reading the code.
+I'm trying really hard to keep it as clean as possible.
+
+> Algorithm documentation is on the way.
+
+If you wish to contact me in person, see this [config.py] file -- it has my
+personal email address (it is also present on my [GitHub profile page]).
+
+[config.py]: src/config.py
+[GitHub profile page]: https://github.com/shapvik

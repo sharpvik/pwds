@@ -4,10 +4,10 @@ import os
 
 import click
 import colorama
-import termcolor as tc
 
 import fun
 import config
+import logger as logr
 
 
 
@@ -31,13 +31,11 @@ The `launch` command
 def launch():
     # warn user if already launched
     if fun.already_launched():
-        tc.cprint(
+        logr.caution(
 """
 CAUTION! It looks like `Pwds` Password Manger has already been launched before
 on this machine. Running launch again will erase any existing data.
-""",
-            'yellow',
-            attrs=['bold']
+"""
         )
 
         proceed = input(
@@ -53,12 +51,22 @@ on this machine. Running launch again will erase any existing data.
     # dealing with local storage
     try:
         os.mkdir(config.DATA_FOLDER)
+        logr.success('Storage folder created')
     except FileExistsError:
         pass
 
     pwds_json: str = json.dumps( dict() )
     fun.pwds_store_write(pwds_json, mpwd)
-    fun.fetch_and_store_dictionary()
+
+    logr.success('New master password is set')
+
+    # Fetching dictionary is a relatively long thing to do as it requests big
+    # file from config.DICTIONARY_LINK, thus, it is beneficial to skip that step
+    # whenever possible.
+    if not os.path.exists(config.DICTIONARY_FILE):
+        fun.fetch_and_store_dictionary()
+
+    logr.success('Launch complete')
 
 
 

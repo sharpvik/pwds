@@ -7,11 +7,11 @@ import getpass
 import typing
 import os
 
-import termcolor as tc
 import requests
 
 import secure
 import config
+import logger as logr
 
 
 
@@ -25,7 +25,7 @@ def already_launched():
 
 """ Ask user to input new Master Password and return it. Warnings included. """
 def new_master_password() -> str:
-    tc.cprint(
+    logr.caution(
 """
 Now, you are going to choose your Master Password. Make sure it is a strong
 password that is hard to guess.
@@ -34,9 +34,7 @@ Don't include common letter and number sequences like `123` and `abc`, make it
 at least 8 characters long.
 
 None of the rules above are enforced by the tool but are strongly recommended.
-""",
-        'yellow',
-        attrs=['bold']
+"""
     )
 
     mpwd: str = str()
@@ -46,7 +44,7 @@ None of the rules above are enforced by the tool but are strongly recommended.
         mpwd2: str = getpass.getpass('Confirm Master Password: ').strip()
 
         if mpwd1 != mpwd2:
-            tc.cprint('Confirmation failed. Passwords differ.', 'red')
+            logr.fail('Confirmation failed. Passwords differ')
 
         else:
             mpwd = mpwd1
@@ -69,23 +67,28 @@ def pwds_store_write(pwds_json: str, mpwd: str):
     pwds_encrypted, salt = secure.encrypt_pwds(pwds_json, mpwd)
 
     # produce HMAC for pwds_encrypted to verity that it hasn't been corrupted
-    mastermac: str = secure.produce_mastermac(pwds_encrypted, mpwd)
+    mastermac: bytes = secure.produce_mastermac(pwds_encrypted, salt).encode()
 
     todo: typing.Dict = {
         pwds_encrypted: config.PWDS_STORE_FILE,
-        mastermac.encode(): config.MASTERMAC_FILE,
+        mastermac: config.MASTERMAC_FILE,
         salt: config.SALT_FILE,
     }
 
     for data, path in todo.items():
         with open(path, 'wb') as file:
             file.write(data)
+            logr.success(f'Write to `{path}` complete')
 
 
 
 def fetch_and_store_dictionary():
+    logr.log('Fetching dictionary...')
+
     r = requests.get(config.DICTIONARY_LINK)
 
     with open(config.DICTIONARY_FILE, 'wb') as words_file:
         for pkg in list(r):
             words_file.write(pkg)
+
+    logr.success('Dictionary fetched and stored')

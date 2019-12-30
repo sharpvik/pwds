@@ -44,3 +44,9 @@ DICTIONARY_FILE = pathlib.Path(DATA_FOLDER, '.dictionary')
 MASTERMAC_FILE = pathlib.Path(DATA_FOLDER, '.mastermac')
 PWDS_STORE_FILE = pathlib.Path(DATA_FOLDER, '.pwds-store')
 SALT_FILE = pathlib.Path(DATA_FOLDER, '.salt')
+
+
+
+""" Project Config """
+
+LOGGER_ON = False

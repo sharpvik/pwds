@@ -33,11 +33,12 @@ def encrypt_pwds(pwds_json: str, mpwd: str) -> typing.Tuple:
 
 
 """ 
-Produce HMAC for `pwds_encrypted` using reversed master passwordas key.
+Produce HMAC for `pwds_encrypted` using reversed salt. This is only used to
+check whether salt or encrypted passwords are corrupt.
 """
-def produce_mastermac(pwds_encrypted: bytes, mpwd: str) -> str:
+def produce_mastermac(pwds_encrypted: bytes, salt: bytes) -> str:
     mastermac: str = hmac.new(
-        mpwd[::-1].encode(), pwds_encrypted, hashlib.sha512
+        salt[::-1], pwds_encrypted, hashlib.sha512
     ).hexdigest()
 
     return mastermac

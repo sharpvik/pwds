@@ -4,8 +4,9 @@ The `config` module contains metadata about the tool.
 
 import pathlib
 import os
+import string
 
-import appdirs
+import appdirs # type: ignore
 
 
 
@@ -20,6 +21,8 @@ AUTHOR_EMAIL: str = 'sharp.vik@gmail.com'
 
 
 
+
+
 """ Github """
 
 GITHUB_LINK: str = 'github.com'
@@ -29,9 +32,13 @@ APP_GITHUB_LINK: str = f'{AUTHOR_GITHUB_LINK}/{APP_NAME}'
 
 
 
+
+
 """ External Sources """
 
 DICTIONARY_LINK: str = 'https://raw.githubusercontent.com/dwyl/english-words/master/words_alpha.txt'
+
+
 
 
 
@@ -47,6 +54,9 @@ SALT_FILE = pathlib.Path(DATA_FOLDER, '.salt')
 
 
 
+
+
 """ Project Config """
 
-LOGGER_ON: bool = False
+LOGGER_ON: bool = True
+CHARACTER_SET: str = string.ascii_letters + string.digits + string.punctuation

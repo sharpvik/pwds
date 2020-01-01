@@ -5,13 +5,16 @@ between multiple Python modules. In other words, all the "fun" is here :)
 
 import getpass
 import os
-from typing import Dict
+import sys
+import json
+from typing import Dict, Tuple, Optional
 
 import requests
 
-import secure
-import config
-import logger as logr
+import secure # type: ignore
+import config # type: ignore
+import storage # type: ignore
+import logger as logr # type: ignore
 
 
 
@@ -24,37 +27,29 @@ def already_launched():
 
 
 
+
+
 """-----------------------------------------------------------------------------
-Ask user to input new Master Password and return it. Warnings included.
+Ask user to input new password and return it.
 -----------------------------------------------------------------------------"""
 
-def new_master_password() -> str:
-    logr.caution(
-"""
-Now, you are going to choose your Master Password. Make sure it is a strong
-password that is hard to guess.
-
-Don't include common letter and number sequences like `123` and `abc`, make it
-at least 8 characters long.
-
-None of the rules above are enforced by the tool but are strongly recommended.
-"""
-    )
-
-    mpwd: str
+def new_password(pwd_name: str) -> str:
+    pwd: str
 
     while True:
-        mpwd1: str = getpass.getpass('Master Password: ').strip()
-        mpwd2: str = getpass.getpass('Confirm Master Password: ').strip()
+        pwd1: str = getpass.getpass(f'{pwd_name}: ').strip()
+        pwd2: str = getpass.getpass(f'Confirm {pwd_name}: ').strip()
 
-        if mpwd1 != mpwd2:
+        if pwd1 != pwd2:
             logr.fail('Confirmation failed. Passwords differ')
 
         else:
-            mpwd = mpwd1
+            pwd = pwd1
             break
 
-    return mpwd
+    return pwd
+
+
 
 
 
@@ -63,13 +58,14 @@ Save encrypted passwords to `.pwds-store`, salt to `.salt`, HMAC verifier to
 `.mastermac`.
 -----------------------------------------------------------------------------"""
 
-def pwds_store_write(pwds_json: str, mpwd: str):
+def pwds_store_write(pwds: Dict[str, str], mpwd: str):
     # type declarations
     pwds_encrypted: bytes
     salt: bytes
 
     # encrypt `pwds_json`
-    pwds_encrypted, salt = secure.encrypt_pwds(pwds_json, mpwd)
+    pwds_json: str = json.dumps(pwds)
+    pwds_encrypted, salt = secure.encrypt_passwords(pwds_json, mpwd)
 
     # produce HMAC for pwds_encrypted to verity that it hasn't been corrupted
     mastermac: bytes = secure.produce_mastermac(pwds_encrypted, salt).encode()
@@ -80,12 +76,21 @@ def pwds_store_write(pwds_json: str, mpwd: str):
         salt: config.SALT_FILE,
     }
 
+    # write to `.pwds-store`
     for data, path in todo.items():
         with open(path, 'wb') as file:
             file.write(data)
             logr.success(f'Write to `{path}` complete')
 
 
+
+
+
+"""-----------------------------------------------------------------------------
+There is a default dictionary that I'm using to generate word-based passwords --
+it is hosted by GitHub in some repo (for full link see config.DICTIONARY_LINK).
+This function is used to fetch and store this dicrionary in appropriate place.
+-----------------------------------------------------------------------------"""
 
 def fetch_and_store_dictionary():
     logr.log('Fetching dictionary...')
@@ -97,3 +102,47 @@ def fetch_and_store_dictionary():
             words_file.write(pkg)
 
     logr.success('Dictionary fetched and stored')
+
+
+
+
+
+"""-----------------------------------------------------------------------------
+This is a *very important function*. It runs every time we want to do something
+with passwords. This will ask user for master password, try to decrypt password
+storage and return a dictionary of password if successfull.
+
+This function only ever returns if it receives correct master password. The only
+way to break out of it otherwise it to CTRL+C in the terminal. This is why we
+don't need any confirmation return values like `auth_ok: bool`.
+-----------------------------------------------------------------------------"""
+
+def auth() -> Tuple[ str, Dict[str, str] ]:
+    # check if salt and/or encrypted password file are corrupt
+    if not secure.salt_and_pwds_store_ok():
+        logr.alert(
+f"""
+Salt or password store appear to be corrupt. There isn't much we can do.
+If you have a backup of those files, fetch it and replace both of them, if not,
+please run `pwds launch`.
+
+On your computer salt and passwords are stored here:
+{config.SALT_FILE}
+{config.PWDS_STORE_FILE}
+"""
+        )
+        sys.exit(1)
+
+    mpwd: str
+    pwds: Optional[ Dict[str, str] ]
+
+    while True:
+        mpwd = getpass.getpass('Master Password: ').strip()
+        pwds = secure.decrypt_passwords(mpwd)
+
+        if pwds is not None:
+            break
+        else:
+            logr.fail('Master Password incorrect. Try again.')
+
+    return mpwd, pwds

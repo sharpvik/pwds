@@ -2,11 +2,12 @@
 
 import termcolor as tc
 
-import config
+import config # type: ignore
 
 
 
 """ Make logger messages optional. """
+
 def optional(logger_func):
     def out_func(msg: str):
         if config.LOGGER_ON:

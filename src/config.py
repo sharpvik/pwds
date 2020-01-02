@@ -45,8 +45,9 @@ DICTIONARY_LINK: str = 'https://raw.githubusercontent.com/dwyl/english-words/mas
 """ Local Storage """
 
 APP_FOLDER = pathlib.Path( os.path.abspath(__file__) ).parent.parent
-DATA_FOLDER = pathlib.Path( appdirs.user_data_dir(APP_NAME, AUTHOR) )
-EXEC_PATH = pathlib.Path(DATA_FOLDER.parent, 'bin', APP_NAME)
+DATA_FOLDER = pathlib.Path( appdirs.user_data_dir(APP_NAME, AUTHOR_NICK) )
+EXEC_PATH = pathlib.Path(DATA_FOLDER.parent.parent, 'bin', APP_NAME) # UNIX OSs
+MAIN_PATH = pathlib.Path(APP_FOLDER, 'src', 'main.py')
 DICTIONARY_FILE = pathlib.Path(DATA_FOLDER, '.dictionary')
 MASTERMAC_FILE = pathlib.Path(DATA_FOLDER, '.mastermac')
 PWDS_STORE_FILE = pathlib.Path(DATA_FOLDER, '.pwds-store')

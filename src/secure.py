@@ -46,7 +46,7 @@ check whether salt or encrypted passwords are corrupt.
 
 def produce_mastermac(pwds_encrypted: bytes, salt: bytes) -> str:
     mastermac: str = hmac.new(
-        salt[::-1], pwds_encrypted, hashlib.sha512
+        salt, pwds_encrypted, hashlib.sha512
     ).hexdigest()
 
     return mastermac

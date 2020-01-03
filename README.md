@@ -123,7 +123,7 @@ Salsa20(secret, encrypted passwords)        => passwords
 | `requests`     | `HTTP` requests handling                    | 2.python-requests.org/en/master |
 | `pycryptodome` | Implementations of cryptographic algorithms | pycryptodome.readthedocs.io     |
 | `colorama`     | Multiplatform teminal output coloring       | github.com/tartley/colorama     |
-| `temcolor`     | Terminal output coloring                    | pypi.org/project/termcolor      |
+| `termcolor`    | Terminal output coloring                    | pypi.org/project/termcolor      |
 
 > Only third-party libraries are listed here. Actually, many more modules are
 > used, however, those are Python standard library modules, so they just work.
